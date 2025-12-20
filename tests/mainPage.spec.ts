@@ -62,7 +62,7 @@ const elements: Elements[] = [
     },
   },
   {
-    locator: (page) => page.getByRole('link', { name: 'Discord server' }),
+    locator: (page: Page) => page.getByRole('link', { name: 'Discord server' }),
     name: 'Discord icon',
     attribute: {
       type: 'href',
@@ -70,8 +70,25 @@ const elements: Elements[] = [
     },
   },
   {
-    locator: (page) => page.getByLabel('Switch between dark and light'),
+    locator: (page: Page) => page.getByLabel('Switch between dark and light'),
     name: 'Lightmode icon',
+  },
+  {
+    locator: (page: Page) =>
+      page.getByRole('heading', {
+        name: ' enables reliable end-to-end testing for modern web apps.',
+      }),
+    name: 'Title',
+    text: 'Playwright enables reliable end-to-end testing for modern web apps.',
+  },
+  {
+    locator: (page: Page): Locator => page.getByRole('link', { name: 'Get started' }),
+    name: 'Get started button',
+    text: 'Get started',
+    attribute: {
+      type: 'href',
+      value: '/docs/intro',
+    },
   },
 ];
 
@@ -111,33 +128,5 @@ test.describe('Тесты главной страницы', () => {
   test('Проверка переключения lightmode', async ({ page }) => {
     await page.getByLabel('Switch between dark and light mode (currently system mode)').click();
     await expect.soft(page.locator('html')).toHaveAttribute('data-theme', 'light');
-  });
-
-  test('Проверка заголовка ', async ({ page }) => {
-    await expect
-      .soft(
-        page.getByRole('heading', {
-          name: ' enables reliable end-to-end testing for modern web apps.',
-        }),
-      )
-      .toBeVisible();
-    await expect.soft(
-      page.getByRole('heading', {
-        name: ' enables reliable end-to-end testing for modern web apps.',
-      }),
-    ).toContainText;
-  });
-
-  test('Проверка кнопки ', async ({ page }) => {
-    await expect
-      .soft(
-        page.getByRole('link', {
-          name: 'Get started',
-        }),
-      )
-      .toBeVisible();
-    await expect
-      .soft(page.getByRole('link', { name: 'Get started' }))
-      .toHaveAttribute('href', '/docs/intro');
   });
 });
